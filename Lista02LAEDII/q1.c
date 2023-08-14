@@ -8,12 +8,11 @@ int main (){
     c = i;   
     printf(" %c", c);
     count++;
-    if(count == 10){
+    if(count == 9){
         printf("\n");
         count = 0;
     }
     i++;
     }while(i <= 127);
-    
 
 }
