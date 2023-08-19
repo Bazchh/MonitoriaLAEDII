@@ -54,7 +54,9 @@ if(balanceamento == 0){
 
 }
 
+//Função para inserir um novo nó na arvore
  struct arvore *inserirNovoNo(struct arvore *raiz, int dados){
+     //Caso encontremos uma folha da arvore, inserimos os nossos novos dados naquela folha
     if(raiz == NULL){
         struct arvore *novoNo = (struct arvore*)malloc(sizeof(struct arvore));
         novoNo->dados = dados;
@@ -62,26 +64,35 @@ if(balanceamento == 0){
         return novoNo;
     }
     
+    //Se a arvore nao estiver vazia, verificamos o valor dentro do nó
+    //Se o valor a qual queremos inserir for menor do que o valor do nó atual, inserimos o novo nó a esquerda do nó atual
     if(dados < raiz->dados){
+        //É realizado a recursão nos nós esquerdos até que cheguemos no caso base da linha 60
         raiz->esq = inserirNovoNo(raiz->esq, dados);
+    //Se o valor a qual queremos inserir for maior do que o valor do nó atual, inserimos o novo nó a direita do nó atual  
     } else if (dados > raiz->dados){
+        //É realizado a recursão nos nós direitos até que cheguemos no caso base da linha 60
         raiz->dir = inserirNovoNo(raiz->dir, dados);
     } else {
+        //Se nenhuma das condições forem atendidas, significa que o valor a qual queremos inserir ja está presente na arvore
         printf("\nEste valor já está presente na arvore");
     }
 
     return raiz;
 
 }
-
+//Função para calcular a altura da arvore
 int alturaDaArvore(struct arvore *raiz){
+    //Caso cheguemos em uma folha, retornamos o valor -1 para a chamada recursiva de cima
     if(raiz == NULL){
         return -1;
     }
-
+    //Calculando a altura das subarvore a esquerda
     int alturaEsq = alturaDaArvore(raiz->esq);
+    //Calculando a altura das subarvore a direita
     int alturaDir = alturaDaArvore(raiz->dir);
 
+    //Quando estamos em um nó preenchido com algum valor, verificamos a altura das subarvores a esquerda e direita do nó pai e retornamos o maior valor da alturas de uma das duas subarvores
     return (alturaEsq > alturaDir) ? alturaEsq + 1 : alturaDir + 1;
 }
 
@@ -129,6 +140,7 @@ struct arvore *removerNo(struct arvore *raiz, int dados){
     } else if(dados > raiz->dados) {
         raiz->dir = removerNo(raiz->dir, dados);
     } else { 
+        
         if(raiz->esq == NULL){
             return raiz->dir;
         }if(raiz->dir == NULL){
@@ -150,11 +162,11 @@ struct arvore *removerNo(struct arvore *raiz, int dados){
 void mostrarArvore(struct arvore*raiz){
 
     if(raiz != NULL){
-        printf(" %i ", raiz->dados);
+    
     mostrarArvore(raiz->esq);
-    
+   
     mostrarArvore(raiz->dir);  
-    
+     printf(" %i ", raiz->dados);
     }      
     
 }
