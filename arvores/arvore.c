@@ -12,8 +12,8 @@ struct arvore {
 int verificaBalanceamento(struct arvore *);
 int antecessor(struct arvore *);
 int alturaDaArvore(struct arvore *);
-struct arvore *inserirNovoNo(struct arvore *, int );
-struct arvore *removerNo(struct arvore *, int );
+struct arvore *inserirNovoNo(struct arvore *, int);
+struct arvore *removerNo(struct arvore *, int);
 void mostrarArvore(struct arvore *);
 
 int main() {
@@ -31,20 +31,7 @@ int main() {
   raiz = inserirNovoNo(raiz, 41);
   raiz = inserirNovoNo(raiz, 42);
 
-  int altura = alturaDaArvore(raiz);
-  printf("\nAltura da arvore: %i\n\n", altura);
   mostrarArvore(raiz);
-  raiz = removerNo(raiz, 54);
-  printf("\n");
-  mostrarArvore(raiz);
-  printf("\n");
-  int balanceamento = verificaBalanceamento(raiz);
-
-  if (balanceamento == 0) {
-    printf("\nA arvore está desbalanceada");
-  } else {
-    printf("\nA arvore está balanceada");
-  }
 }
 
 // Função para inserir um novo nó na arvore
@@ -122,13 +109,14 @@ int verificaBalanceamento(struct arvore *raiz) {
 }
 
 int antecessor(struct arvore *raiz) {
-  int s = raiz->dados;
-  while (raiz->dir != NULL) {
-    s = raiz->dir->dados;
-    raiz = raiz->dir;
+  int s;
+  struct arvore *aux = raiz->esq;
+  while (aux->dir != NULL) {
+    s = aux->dir->dados;
+    aux = aux->dir;
   }
   // Removendo o antecessor encontrado para não permitir duplicação de valores
-  raiz->dir = NULL;
+  aux->dir = NULL;
   return s;
 }
 
@@ -154,7 +142,7 @@ struct arvore *removerNo(struct arvore *raiz, int dados) {
 
     // Essa função reorganiza a arvore com base no antecessor do nó atual,
     // colocando o antecessor no lugar do nó que queremos remover
-    raiz->dados = antecessor(raiz->esq);
+    raiz->dados = antecessor(raiz);
     // Ao realizar o processo anterior
     raiz->esq = removerNo(raiz->esq, raiz->dados);
   }
@@ -163,12 +151,9 @@ struct arvore *removerNo(struct arvore *raiz, int dados) {
 }
 
 void mostrarArvore(struct arvore *raiz) {
-
   if (raiz != NULL) {
-
     mostrarArvore(raiz->esq);
-
-    mostrarArvore(raiz->dir);
     printf(" %i ", raiz->dados);
+    mostrarArvore(raiz->dir);
   }
 }
