@@ -10,7 +10,7 @@ struct arvore {
 
 // Definição de escopo de funções
 int verificaBalanceamento(struct arvore *raiz);
-int sucessor(struct arvore *raiz);
+int antecessor(struct arvore *raiz);
 int alturaDaArvore(struct arvore *raiz);
 struct arvore *inserirNovoNo(struct arvore *raiz, int dados);
 struct arvore *removerNo(struct arvore *raiz, int dados);
@@ -127,13 +127,13 @@ int verificaBalanceamento(struct arvore *raiz) {
   }
 }
 
-int sucessor(struct arvore *raiz) {
+int antecessor(struct arvore *raiz) {
   int s = raiz->dados;
   while (raiz->dir != NULL) {
     s = raiz->dir->dados;
     raiz = raiz->dir;
   }
-  // Removendo o sucessor encontrado para não permitir duplicação de valores
+  // Removendo o antecessor encontrado para não permitir duplicação de valores
   raiz->dir = NULL;
   return s;
 }
@@ -158,9 +158,9 @@ struct arvore *removerNo(struct arvore *raiz, int dados) {
       return raiz->esq;
     }
 
-    // Essa função reorganiza a arvore com base no sucessor do nó atual,
-    // colocando o sucessor no lugar do nó que queremos remover
-    raiz->dados = sucessor(raiz->esq);
+    // Essa função reorganiza a arvore com base no antecessor do nó atual,
+    // colocando o antecessor no lugar do nó que queremos remover
+    raiz->dados = antecessor(raiz->esq);
     // Ao realizar o processo anterior
     raiz->esq = removerNo(raiz->esq, raiz->dados);
   }
