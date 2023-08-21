@@ -9,33 +9,27 @@ struct arvore {
 };
 
 // Definição de escopo de funções
-int verificaBalanceamento(struct arvore *raiz);
-int antecessor(struct arvore *raiz);
-int alturaDaArvore(struct arvore *raiz);
-struct arvore *inserirNovoNo(struct arvore *raiz, int dados);
-struct arvore *removerNo(struct arvore *raiz, int dados);
-void mostrarArvore(struct arvore *raiz);
+int verificaBalanceamento(struct arvore *);
+int antecessor(struct arvore *);
+int alturaDaArvore(struct arvore *);
+struct arvore *inserirNovoNo(struct arvore *, int );
+struct arvore *removerNo(struct arvore *, int );
+void mostrarArvore(struct arvore *);
 
 int main() {
 
   struct arvore *raiz = (struct arvore *)malloc(sizeof(struct arvore));
   raiz = NULL;
 
-  raiz = inserirNovoNo(raiz, 10);
-  raiz = inserirNovoNo(raiz, 22);
-  raiz = inserirNovoNo(raiz, 4);
-  raiz = inserirNovoNo(raiz, 1);
-  raiz = inserirNovoNo(raiz, 7);
-  raiz = inserirNovoNo(raiz, 16);
-  raiz = inserirNovoNo(raiz, 13);
-  raiz = inserirNovoNo(raiz, 19);
-  raiz = inserirNovoNo(raiz, 54);
-  raiz = inserirNovoNo(raiz, 28);
-  raiz = inserirNovoNo(raiz, 57);
-  raiz = inserirNovoNo(raiz, 51);
+  raiz = inserirNovoNo(raiz, 30);
+  raiz = inserirNovoNo(raiz, 20);
+  raiz = inserirNovoNo(raiz, 12);
   raiz = inserirNovoNo(raiz, 25);
-  raiz = inserirNovoNo(raiz, 48);
-  raiz = inserirNovoNo(raiz, 60);
+  raiz = inserirNovoNo(raiz, 27);
+  raiz = inserirNovoNo(raiz, 40);
+  raiz = inserirNovoNo(raiz, 35);
+  raiz = inserirNovoNo(raiz, 41);
+  raiz = inserirNovoNo(raiz, 42);
 
   int altura = alturaDaArvore(raiz);
   printf("\nAltura da arvore: %i\n\n", altura);
