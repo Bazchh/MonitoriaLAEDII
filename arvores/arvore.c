@@ -32,6 +32,7 @@ int main() {
   raiz = inserirNovoNo(raiz, 42);
 
   mostrarArvore(raiz);
+  int altura = alturaDaArvore(raiz);
 }
 
 // Função para inserir um novo nó na arvore
