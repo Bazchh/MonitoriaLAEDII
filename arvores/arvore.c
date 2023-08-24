@@ -10,6 +10,7 @@ struct arvore{
 };
 
 //Definição de escopo de funções
+int max(int a, int b);
 struct arvore *rotacaoDir(struct arvore *raiz);
 struct arvore *rotacaoEsq(struct arvore *raiz);
 int alturaDoNo(struct arvore *raiz);
@@ -27,25 +28,48 @@ int main(){
   raiz = 0;
 
   raiz = inserirNovoNo(raiz, 30);
+  mostrarArvore(raiz);
+  printf("\n\n");
   raiz = inserirNovoNo(raiz, 20);
+  mostrarArvore(raiz);
+  printf("\n\n");
   raiz = inserirNovoNo(raiz, 12);
+  mostrarArvore(raiz);
+  printf("\n\n");
   raiz = inserirNovoNo(raiz, 11);
+  mostrarArvore(raiz);
+  printf("\n\n");
   raiz = inserirNovoNo(raiz, 25);
+  mostrarArvore(raiz);
+  printf("\n\n");
   raiz = inserirNovoNo(raiz, 27);
+  mostrarArvore(raiz);
+  printf("\n\n");
   raiz = inserirNovoNo(raiz, 40);
+  mostrarArvore(raiz);
+  printf("\n\n");
   raiz = inserirNovoNo(raiz, 35);
+  mostrarArvore(raiz);
+  printf("\n\n");
   raiz = inserirNovoNo(raiz, 41);
+  mostrarArvore(raiz);
+  printf("\n\n");
   raiz = inserirNovoNo(raiz, 42);
+  mostrarArvore(raiz);
+  printf("\n\n");
   raiz = inserirNovoNo(raiz, 34);
+  mostrarArvore(raiz);
+  printf("\n\n");
   raiz = inserirNovoNo(raiz, 36);
   mostrarArvore(raiz);
+  printf("\n\n");
   int altura = alturaDaArvore(raiz);
   if(verificaBalanceamento(raiz)){
       printf("\nA arvore esta balanceada");
   } else {
       printf("\nA arvore nao esta balanceada");
   }
-
+mostrarArvore(raiz);
 
 
 }
@@ -75,8 +99,9 @@ int main(){
         printf("\nEste valor já está presente na arvore");
     }
 
+    //Atualizando altura do no atual passado como parametro
     raiz->altura = alturaDaArvore(raiz) + 1;
-
+    //Verificando balanceamento do no atual para iniciar processo de balanceamento
     int b = balanceamento(raiz);
     if(b > 1 && (raiz->esq != 0) && dados < raiz->esq->dados){
         return rotacaoDir(raiz);
@@ -95,7 +120,7 @@ int main(){
         raiz->dir = rotacaoDir(raiz->dir);
         return rotacaoEsq(raiz);
     }
-
+    
     return raiz;
 
 }
@@ -112,7 +137,7 @@ int alturaDaArvore(struct arvore *raiz){
     int alturaDir = alturaDaArvore(raiz->dir);
 
     //Quando estamos em um nó preenchido com algum valor, verificamos a altura das subarvores a esquerda e direita do nó pai e retornamos o maior valor da alturas de uma das duas subarvores
-    return (alturaEsq > alturaDir) ? alturaEsq + 1 : alturaDir + 1;
+    return max(alturaDir,alturaEsq) + 1;
 }
 
 //Função que verifica se uma arvore está balanceada
@@ -135,6 +160,10 @@ int verificaBalanceamento(struct arvore *raiz){
 
 }
 
+int max(int a, int b){
+    return (a > b) ? a : b;
+}
+
 int balanceamento(struct arvore * raiz){
     if(raiz == 0){
         return 0;
@@ -152,33 +181,29 @@ int alturaDoNo(struct arvore *raiz){
 
 }
 
-struct arvore *rotacaoDir(struct arvore *raiz){
-    struct arvore *aux = raiz->esq;
-    struct arvore *aux2 = raiz->dir;
+struct arvore *rotacaoDir(struct arvore *raiz) {
+    struct arvore *novoNo = raiz->esq;
+    raiz->esq = novoNo->dir;
+    novoNo->dir = raiz;
     
-    aux->dir = raiz;
-    raiz->esq = aux2;
+    raiz->altura = max(alturaDoNo(raiz->esq), alturaDoNo(raiz->dir)) + 1;
+    novoNo->altura = max(alturaDoNo(novoNo->esq), alturaDoNo(novoNo->dir)) + 1;
 
-    aux->altura = alturaDaArvore(aux);
-    raiz->altura = alturaDaArvore(raiz);
-
-    return aux;
-
+    return novoNo;
 }
 
-struct arvore *rotacaoEsq(struct arvore *raiz){
-    struct arvore *aux = raiz->dir;
-    struct arvore *aux2 = raiz->esq;
+
+struct arvore *rotacaoEsq(struct arvore *raiz) {
+    struct arvore *novoNo = raiz->dir;
+    raiz->dir = novoNo->esq;
+    novoNo->esq = raiz;
     
-    aux->esq = raiz;
-    raiz->dir = aux2;
+    raiz->altura = max(alturaDoNo(raiz->esq), alturaDoNo(raiz->dir)) + 1;
+    novoNo->altura = max(alturaDoNo(novoNo->esq), alturaDoNo(novoNo->dir)) + 1;
 
-    aux->altura = alturaDaArvore(aux);
-    raiz->altura = alturaDaArvore(raiz);
-
-    return aux;
-
+    return novoNo;
 }
+
 
 int sucessor(struct arvore *raiz){
  int s = raiz->dados;
