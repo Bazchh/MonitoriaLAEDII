@@ -4,11 +4,16 @@
 //Estrutura que define uma arvore
 struct arvore{
     int dados;
+    int altura;
     struct arvore *esq;
     struct arvore *dir;
 };
 
 //Definição de escopo de funções
+struct arvore *rotacaoDir(struct arvore *raiz);
+struct arvore *rotacaoEsq(struct arvore *raiz);
+int alturaDoNo(struct arvore *raiz);
+int balanceamento(struct arvore * raiz);
 int verificaBalanceamento(struct arvore *raiz);
 int sucessor(struct arvore *raiz);
 int alturaDaArvore(struct arvore *raiz);
@@ -19,7 +24,7 @@ void mostrarArvore(struct arvore*raiz);
 int main(){
 
  struct arvore *raiz = (struct arvore *)malloc(sizeof(struct arvore));
-  raiz = NULL;
+  raiz = 0;
 
   raiz = inserirNovoNo(raiz, 30);
   raiz = inserirNovoNo(raiz, 20);
@@ -34,12 +39,11 @@ int main(){
   raiz = inserirNovoNo(raiz, 34);
   raiz = inserirNovoNo(raiz, 36);
   mostrarArvore(raiz);
-  removerNo(raiz,35);
   int altura = alturaDaArvore(raiz);
   if(verificaBalanceamento(raiz)){
       printf("\nA arvore esta balanceada");
   } else {
-      printf("\nA nao arvore esta balanceada");
+      printf("\nA arvore nao esta balanceada");
   }
 
 
@@ -49,10 +53,11 @@ int main(){
 //Função para inserir um novo nó na arvore
  struct arvore *inserirNovoNo(struct arvore *raiz, int dados){
      //Caso encontremos uma folha da arvore, inserimos os nossos novos dados naquela folha
-    if(raiz == NULL){
+    if(raiz == 0){
         struct arvore *novoNo = (struct arvore*)malloc(sizeof(struct arvore));
         novoNo->dados = dados;
-        novoNo->esq = novoNo->dir = NULL;
+        novoNo->esq = novoNo->dir = 0;
+        novoNo->altura = 1;
         return novoNo;
     }
     
@@ -70,13 +75,35 @@ int main(){
         printf("\nEste valor já está presente na arvore");
     }
 
+    raiz->altura = alturaDaArvore(raiz) + 1;
+
+    int b = balanceamento(raiz);
+    if(b > 1 && (raiz->esq != 0) && dados < raiz->esq->dados){
+        return rotacaoDir(raiz);
+    }
+
+    if(b < -1 && (raiz->dir != 0) && dados > raiz->dir->dados){
+        return rotacaoEsq(raiz);
+    }
+
+    if(b > 1 && (raiz->esq != 0) && dados > raiz->esq->dados){
+        raiz->esq = rotacaoEsq(raiz->esq);
+        return rotacaoDir(raiz);
+    }
+
+    if(b < -1 && (raiz->dir != 0) && dados < raiz->dir->dados){
+        raiz->dir = rotacaoDir(raiz->dir);
+        return rotacaoEsq(raiz);
+    }
+
     return raiz;
 
 }
+
 //Função para calcular a altura da arvore
 int alturaDaArvore(struct arvore *raiz){
     //Caso cheguemos em uma folha, retornamos o valor -1 para a chamada recursiva de cima
-    if(raiz == NULL){
+    if(raiz == 0){
         return -1;
     }
     //Calculando a altura das subarvore a esquerda
@@ -91,7 +118,7 @@ int alturaDaArvore(struct arvore *raiz){
 //Função que verifica se uma arvore está balanceada
 int verificaBalanceamento(struct arvore *raiz){
     //caso a arvore esteja vazia, ela está balanceada e retornamos 1, sinalizando verdadeiro para o balanceamento
-    if(raiz == NULL){
+    if(raiz == 0){
         return 1;
     }
     //Para verificar se uma arvore está balanceada devemos calcular a altura de ambos os lados da arvore, esquerdo e direito
@@ -108,22 +135,67 @@ int verificaBalanceamento(struct arvore *raiz){
 
 }
 
+int balanceamento(struct arvore * raiz){
+    if(raiz == 0){
+        return 0;
+    }
+
+    return alturaDaArvore(raiz->esq) - alturaDaArvore(raiz->dir);
+}
+
+int alturaDoNo(struct arvore *raiz){
+ if(raiz == 0){
+    return 0;
+ }
+
+    return raiz->altura;
+
+}
+
+struct arvore *rotacaoDir(struct arvore *raiz){
+    struct arvore *aux = raiz->esq;
+    struct arvore *aux2 = raiz->dir;
+    
+    aux->dir = raiz;
+    raiz->esq = aux2;
+
+    aux->altura = alturaDaArvore(aux);
+    raiz->altura = alturaDaArvore(raiz);
+
+    return aux;
+
+}
+
+struct arvore *rotacaoEsq(struct arvore *raiz){
+    struct arvore *aux = raiz->dir;
+    struct arvore *aux2 = raiz->esq;
+    
+    aux->esq = raiz;
+    raiz->dir = aux2;
+
+    aux->altura = alturaDaArvore(aux);
+    raiz->altura = alturaDaArvore(raiz);
+
+    return aux;
+
+}
+
 int sucessor(struct arvore *raiz){
  int s = raiz->dados;
-    while(raiz->esq != NULL){
+    while(raiz->esq != 0){
         s = raiz->esq->dados;
         raiz = raiz->esq;
     }
     //Removendo o sucessor encontrado para não permitir duplicação de valores
-    raiz->esq = NULL;
+    raiz->esq = 0;
     return s;
 }
 
 struct arvore *removerNo(struct arvore *raiz, int dados){
 
-    if(raiz == NULL){
+    if(raiz == 0){
         printf("\nO valor buscado não está na arvore");
-        return NULL;
+        return 0;
     }
 
     
@@ -133,9 +205,9 @@ struct arvore *removerNo(struct arvore *raiz, int dados){
         raiz->dir = removerNo(raiz->dir, dados);
     } else { 
         
-        if(raiz->esq == NULL){
+        if(raiz->esq == 0){
             return raiz->dir;
-        }if(raiz->dir == NULL){
+        }if(raiz->dir == 0){
             return raiz->esq;
         }
 
@@ -153,7 +225,7 @@ struct arvore *removerNo(struct arvore *raiz, int dados){
 
 void mostrarArvore(struct arvore*raiz){
 
-    if(raiz != NULL){
+    if(raiz != 0){
     mostrarArvore(raiz->esq);
     printf(" %i ", raiz->dados);
     mostrarArvore(raiz->dir);  
