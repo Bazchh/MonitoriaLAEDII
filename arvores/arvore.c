@@ -1,9 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct card{
+    int p1;//0, 1, 2
+    int p2;//0, 1, 2
+    int p3;//0, 1, 2
+    int p4;//0, 1, 2
+};
+
 //Estrutura que define uma arvore
 struct arvore{
-    int dados;
+    struct card dados;
     int altura;
     struct arvore *esq;
     struct arvore *dir;
