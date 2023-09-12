@@ -9,12 +9,12 @@ struct contato{
  char nome[20];
  char tel[11];
  char email[20];
- struct no *prox;
+ struct lista *prox;
 };
 
-struct no{
+struct lista{
     struct contato *contato;
-    struct no *prox;
+    struct lista *prox;
 };
 
 struct contato *criaContato(char nome[], char tel[], char email[]){
@@ -44,7 +44,7 @@ int funcHashMult(int key){
     return key * random * size;
 }
 
-typedef struct contato *agendaDeContatos[size];
+typedef struct lista *agendaDeContatos[size];
 
 void iniciarAgenda(agendaDeContatos &Hash){
     int i;
@@ -60,9 +60,9 @@ int inserir(agendaDeContatos Hash, struct contato *c){
     key = funHashDiv(key);
 
     if(Hash[key] == 0){
-        Hash[key] = c;
+        Hash[key]->contato = c;
     } else {
-        struct no *novo = (struct no*)malloc(sizeof(struct no));
+        struct lista *novo = (struct lista*)malloc(sizeof(struct lista));
         novo = Hash[key]->prox;
         for(novo; novo != NULL; novo = novo->prox ){
             if(novo == NULL){
