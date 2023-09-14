@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 #define size 32
+
 struct contato{
- char nome[20];
- char tel[11];
- char email[20];
+ char *nome;
+ char *tel;
+ char *email;
 };
 
 int concatenacao(char c[]){
@@ -51,4 +52,8 @@ int inserir(agendaDeContatos Hash, struct contato *c){
             key_inicio = key;
         }
     }
+}
+
+int main(){
+    
 }
