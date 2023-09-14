@@ -17,11 +17,11 @@ struct lista{
     struct lista *prox;
 };
 
-struct contato *criaContato(char nome[], char tel[], char email[]){
+struct contato *criaContato(char *nome, char *tel, char *email){
     struct contato *novo = (struct contato *)malloc(sizeof(struct contato));
-    strcpy(novo->nome,nome);
-    strcpy(novo->tel,tel);
-    strcpy(novo->email,email);
+    strncpy(nome,novo->nome,sizeof(nome)-1);
+    strncpy(tel,novo->tel,sizeof(tel)-1);
+    strncpy(email,novo->email,sizeof(email)-1);
     return novo;
 }
 
@@ -70,13 +70,18 @@ int inserir(agendaDeContatos Hash, struct contato *c){
             }
         }
     }
+    
+    return key;
 }
 
 int main(){
     struct contato *novo = (struct contato*)malloc(sizeof(contato));
-    char *nome = "Mikael";
-    char *tel = "84996488895";
-    char *email = "mikael.vidal@gmail.com";
+    char *nome;
+    strncpy(nome,"Mikael", sizeof("Mikael")-1);
+    char *tel;
+    strncpy(tel,"84996488895",sizeof("84996488895")-1);
+    char *email;
+    strncpy(email,"mikael.vidal@gmail.com",sizeof("mikael.vidal@gmail.com")-1);
     novo = criaContato(nome, tel,email);
 
     agendaDeContatos agenda;
