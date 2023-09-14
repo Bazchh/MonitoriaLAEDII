@@ -6,9 +6,9 @@
 #define size 32
 
 struct contato{
- char nome[20];
- char tel[11];
- char email[20];
+ char *nome;
+ char *tel;
+ char *email;
  struct lista *prox;
 };
 
@@ -19,9 +19,12 @@ struct lista{
 
 struct contato *criaContato(char *nome, char *tel, char *email){
     struct contato *novo = (struct contato *)malloc(sizeof(struct contato));
-    strncpy(nome,novo->nome,sizeof(nome)-1);
-    strncpy(tel,novo->tel,sizeof(tel)-1);
-    strncpy(email,novo->email,sizeof(email)-1);
+    novo->nome = (char *)malloc(sizeof(char));
+    novo->tel = (char *)malloc(sizeof(char));
+    novo->email = (char *)malloc(sizeof(char));
+    strcpy(novo->nome,nome);
+    strcpy(novo->tel,tel);                                                                                                 
+    strcpy(novo->email,email);
     return novo;
 }
 
@@ -56,15 +59,14 @@ void iniciarAgenda(agendaDeContatos &Hash){
 }
 
 int inserir(agendaDeContatos Hash, struct contato *c){
-    int key = concatenacao(c->nome);
+    size_t key = concatenacao(c->nome);
     key = funHashDiv(key);
 
-    if(Hash[key] == 0){
+    if(Hash[key] == NULL){
         Hash[key]->contato = c;
     } else {
-        struct lista *novo = (struct lista*)malloc(sizeof(struct lista));
-        novo = Hash[key]->prox;
-        for(novo; novo != NULL; novo = novo->prox ){
+        struct lista *novo = Hash[key]->prox;
+        for(novo; novo->prox != NULL; novo = novo->prox ){
             if(novo == NULL){
                 novo->contato = c;
             }
@@ -76,12 +78,12 @@ int inserir(agendaDeContatos Hash, struct contato *c){
 
 int main(){
     struct contato *novo = (struct contato*)malloc(sizeof(contato));
-    char *nome;
-    strncpy(nome,"Mikael", sizeof("Mikael")-1);
-    char *tel;
-    strncpy(tel,"84996488895",sizeof("84996488895")-1);
-    char *email;
-    strncpy(email,"mikael.vidal@gmail.com",sizeof("mikael.vidal@gmail.com")-1);
+    char *nome = (char*)malloc(sizeof(char));
+    strncpy(nome,"Mikael", sizeof("Mikael"));
+    char *tel = (char*)malloc(sizeof(char));
+    strncpy(tel,"84996488895", sizeof("84996488895"));
+    char *email = (char*)malloc(sizeof(char));
+    strncpy(email,"mikael.vidal@gmail.com",sizeof("mikael.vidal@gmail.com"));
     novo = criaContato(nome, tel,email);
 
     agendaDeContatos agenda;
