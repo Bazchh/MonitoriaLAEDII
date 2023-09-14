@@ -9,7 +9,6 @@ struct contato{
  char *nome;
  char *tel;
  char *email;
- struct lista *prox;
 };
 
 struct lista{
@@ -49,7 +48,7 @@ int funcHashMult(int key){
 
 typedef struct lista *agendaDeContatos[size];
 
-void iniciarAgenda(agendaDeContatos &Hash){
+void iniciarAgenda(agendaDeContatos Hash){
     int i;
     for(i = 0; i < size; i++){
         Hash[i] = NULL;
@@ -78,9 +77,8 @@ int inserir(agendaDeContatos Hash, struct contato *c){
 }
 
 int main(){
- /*
-    TESTES DE INSERÇÃO (OBS: USAR SET = 19 NA SEGUNDA INSERÇÃO PARA REALIZAR UMA COLISÃO)
-    struct contato *novo = (struct contato*)malloc(sizeof(contato));
+
+    struct contato *novo = (struct contato*)malloc(sizeof(struct contato));
     char *nome = (char*)malloc(sizeof(char));
     strncpy(nome,"Mikael", sizeof("Mikael"));
     char *tel = (char*)malloc(sizeof(char));
@@ -102,5 +100,5 @@ int main(){
     inserir(agenda,novo);
 
     strncpy(email,"joao.vidal@gmail.com",sizeof("joao.vidal@gmail.com"));
-*/
+
 }
