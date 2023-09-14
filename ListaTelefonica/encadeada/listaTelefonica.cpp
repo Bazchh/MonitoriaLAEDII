@@ -52,8 +52,7 @@ typedef struct lista *agendaDeContatos[size];
 void iniciarAgenda(agendaDeContatos &Hash){
     int i;
     for(i = 0; i < size; i++){
-        Hash[i] = 0;
-        Hash[i]->prox = NULL;
+        Hash[i] = NULL;
     }
 
 }
@@ -61,22 +60,26 @@ void iniciarAgenda(agendaDeContatos &Hash){
 int inserir(agendaDeContatos Hash, struct contato *c){
     size_t key = concatenacao(c->nome);
     key = funHashDiv(key);
-
+    struct lista*novo = (struct lista*)malloc(sizeof(struct lista));
+    novo->contato = c;
+    novo->prox = NULL;
     if(Hash[key] == NULL){
-        Hash[key]->contato = c;
+        Hash[key] = novo;
     } else {
-        struct lista *novo = Hash[key]->prox;
-        for(novo; novo->prox != NULL; novo = novo->prox ){
-            if(novo == NULL){
-                novo->contato = c;
-            }
-        }
+        struct lista *aux = Hash[key]; 
+        
+        for(; aux->prox != NULL; aux = aux->prox );    
+                aux->prox = novo;
+    
+            
     }
     
     return key;
 }
 
 int main(){
+ /*
+    TESTES DE INSERÇÃO (OBS: USAR SET = 19 NA SEGUNDA INSERÇÃO PARA REALIZAR UMA COLISÃO)
     struct contato *novo = (struct contato*)malloc(sizeof(contato));
     char *nome = (char*)malloc(sizeof(char));
     strncpy(nome,"Mikael", sizeof("Mikael"));
@@ -87,6 +90,17 @@ int main(){
     novo = criaContato(nome, tel,email);
 
     agendaDeContatos agenda;
+    iniciarAgenda(agenda);
+    inserir(agenda,novo);
+    nome = (char*)malloc(sizeof(char));
+    strncpy(nome,"Joao", sizeof("Joao"));
+    tel = (char*)malloc(sizeof(char));
+    strncpy(tel,"84996488891", sizeof("84996488891"));
+    email = (char*)malloc(sizeof(char));
+    strncpy(email,"joao.vidal@gmail.com",sizeof("joao.vidal@gmail.com"));
+    novo = criaContato(nome, tel,email);
     inserir(agenda,novo);
 
+    strncpy(email,"joao.vidal@gmail.com",sizeof("joao.vidal@gmail.com"));
+*/
 }
