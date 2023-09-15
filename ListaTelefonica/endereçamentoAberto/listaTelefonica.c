@@ -22,9 +22,11 @@ int funHashDiv(int key){
     return key % size;
 }
 
-int funcHashMult(int key){
-    float random = rand()/RAND_MAX;
-    return key * random * size;
+double funcHashMult(int key){
+    
+    int inteiroAleatorio = rand();
+    double random = (double)inteiroAleatorio / RAND_MAX;
+    return (key * random) / size;
 }
 
 typedef struct contato *agendaDeContatos[size];
