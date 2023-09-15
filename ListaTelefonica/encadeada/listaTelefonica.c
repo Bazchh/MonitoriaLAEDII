@@ -40,10 +40,11 @@ int funHashDiv(int key){
     return key % size;
 }
 
-int funcHashMult(int key){
-    srand(time(NULL));
-    float random = rand()/RAND_MAX;
-    return key * random * size;
+double funcHashMult(int key){
+    
+    int inteiroAleatorio = rand();
+    double random = (double)inteiroAleatorio / RAND_MAX;
+    return (key * random) / size;
 }
 
 typedef struct lista *agendaDeContatos[size];
@@ -58,7 +59,7 @@ void iniciarAgenda(agendaDeContatos Hash){
 
 int inserir(agendaDeContatos Hash, struct contato *c){
     size_t key = concatenacao(c->nome);
-    key = funHashDiv(key);
+    key = funcHashMult(key);
     struct lista*novo = (struct lista*)malloc(sizeof(struct lista));
     novo->contato = c;
     novo->prox = NULL;
@@ -77,7 +78,7 @@ int inserir(agendaDeContatos Hash, struct contato *c){
 }
 
 int main(){
-
+    srand(time(NULL));
     struct contato *novo = (struct contato*)malloc(sizeof(struct contato));
     char *nome = (char*)malloc(sizeof(char));
     strncpy(nome,"Mikael", sizeof("Mikael"));
