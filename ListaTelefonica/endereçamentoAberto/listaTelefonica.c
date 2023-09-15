@@ -23,7 +23,6 @@ int funHashDiv(int key){
 }
 
 int funcHashMult(int key){
-    srand(time(NULL));
     float random = rand()/RAND_MAX;
     return key * random * size;
 }
@@ -55,5 +54,5 @@ int inserir(agendaDeContatos Hash, struct contato *c){
 }
 
 int main(){
-    
+    srand(time(NULL));
 }
