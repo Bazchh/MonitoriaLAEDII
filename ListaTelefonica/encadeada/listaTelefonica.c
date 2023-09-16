@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
 
 #define size 32
@@ -41,10 +40,7 @@ int funHashDiv(int key){
 }
 
 double funcHashMult(int key){
-    
-    int inteiroAleatorio = rand();
-    double random = (double)inteiroAleatorio / RAND_MAX;
-    return (key * random) / size;
+    return (key * 0.2) / size;
 }
 
 typedef struct lista *agendaDeContatos[size];
@@ -68,7 +64,7 @@ int inserir(agendaDeContatos Hash, struct contato *c){
     } else {
         struct lista *aux = Hash[key]; 
         
-        for(; aux->prox != NULL; aux = aux->prox );    
+        for(; aux->prox != NULL; aux = aux->prox);    
                 aux->prox = novo;
     
             
@@ -77,8 +73,45 @@ int inserir(agendaDeContatos Hash, struct contato *c){
     return key;
 }
 
+struct contato *buscarContato(agendaDeContatos Hash, struct contato* c){
+    size_t key = concatenacao(c->nome);
+    key = funcHashMult(key);
+    struct contato *novo;
+    if(Hash[key]->contato == c){
+        novo = Hash[key]->contato;
+        return novo;
+    } else {
+        struct lista *aux = Hash[key]; 
+        
+        for(; aux != NULL; aux = aux->prox){
+            if(aux->contato == c){
+                return aux->contato;
+            }
+        }     
+        
+    }
+    
+}
+
+void removerContato(agendaDeContatos Hash, struct contato *c){
+    size_t key = concatenacao(c->nome);
+    key = funcHashMult(key);
+    
+    struct lista *aux = Hash[key];
+    struct lista *aux1 = aux;
+    
+    for(; aux != NULL; aux = aux->prox){
+            if(aux->contato == c){  
+                aux1->prox = aux->prox;
+                free(aux);
+                break;
+            }
+            aux1 = aux;
+        
+    }
+}
+
 int main(){
-    srand(time(NULL));
     struct contato *novo = (struct contato*)malloc(sizeof(struct contato));
     char *nome = (char*)malloc(sizeof(char));
     strncpy(nome,"Mikael", sizeof("Mikael"));
@@ -91,15 +124,13 @@ int main(){
     agendaDeContatos agenda;
     iniciarAgenda(agenda);
     inserir(agenda,novo);
-    nome = (char*)malloc(sizeof(char));
     strncpy(nome,"Joao", sizeof("Joao"));
-    tel = (char*)malloc(sizeof(char));
     strncpy(tel,"84996488891", sizeof("84996488891"));
-    email = (char*)malloc(sizeof(char));
     strncpy(email,"joao.vidal@gmail.com",sizeof("joao.vidal@gmail.com"));
     novo = criaContato(nome, tel,email);
     inserir(agenda,novo);
-
+    inserir(agenda,novo);
     strncpy(email,"joao.vidal@gmail.com",sizeof("joao.vidal@gmail.com"));
+    removerContato(agenda, novo);
 
 }
