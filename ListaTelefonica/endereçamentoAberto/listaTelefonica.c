@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <string.h>
 #define size 32
 
 struct contato{
@@ -8,6 +8,17 @@ struct contato{
  char *tel;
  char *email;
 };
+
+struct contato *criaContato(char *nome, char *tel, char *email){
+    struct contato *novo = (struct contato *)malloc(sizeof(struct contato));
+    novo->nome = (char *)malloc(sizeof(char));
+    novo->tel = (char *)malloc(sizeof(char));
+    novo->email = (char *)malloc(sizeof(char));
+    strcpy(novo->nome,nome);
+    strcpy(novo->tel,tel);                                                                                                 
+    strcpy(novo->email,email);
+    return novo;
+}
 
 int concatenacao(char c[]){
     int key = 0, i = 0;
@@ -55,6 +66,52 @@ int inserir(agendaDeContatos Hash, struct contato *c){
     }
 }
 
+struct contato *buscarContato(agendaDeContatos Hash, struct contato *c){
+    size_t key = concatenacao(c->nome);
+    key = funcHashMult(key);
+    struct contato *novo;
+    int key_inicio = key;
+    while(1){
+        if(Hash[key] == c){
+        novo = Hash[key];
+        return novo;
+        }
+        key++;
+        
+         if(key_inicio == key){
+            break;
+        }
+
+        if(key > size){
+            key = key%size;
+            key_inicio = key;
+        }
+    }
+    
+}
+
+void removerContato(agendaDeContatos Hash, struct contato *c){
+    struct contato *novo = buscarContato(Hash, c);
+    free(novo);
+}
+
+
 int main(){
-    srand(time(NULL));
+    struct contato *novo = (struct contato*)malloc(sizeof(struct contato));
+    char *nome = (char*)malloc(sizeof(char));
+    strncpy(nome,"Mikael", sizeof("Mikael"));
+    char *tel = (char*)malloc(sizeof(char));
+    strncpy(tel,"84996488895", sizeof("84996488895"));
+    char *email = (char*)malloc(sizeof(char));
+    strncpy(email,"mikael.vidal@gmail.com",sizeof("mikael.vidal@gmail.com"));
+    novo = criaContato(nome, tel,email);
+    agendaDeContatos agenda;
+    inserir(agenda,novo);
+    strncpy(nome,"Joao", sizeof("Joao"));
+    strncpy(tel,"84996488891", sizeof("84996488891"));
+    strncpy(email,"joao.vidal@gmail.com",sizeof("joao.vidal@gmail.com"));
+    novo = criaContato(nome, tel, email);
+    inserir(agenda,novo);
+    removerContato(agenda, novo);
+    
 }
