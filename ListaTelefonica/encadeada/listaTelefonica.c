@@ -32,7 +32,7 @@ int concatenacao(char c[]){
         key += c[i];
         i++; 
     } 
-    return key;
+    return key % size;
 }
 
 int funHashDiv(int key){
@@ -93,13 +93,24 @@ struct contato *buscarContato(agendaDeContatos Hash, struct contato* c){
     
 }
 
-void removerContato(agendaDeContatos Hash, struct contato *c){
+int removerContato(agendaDeContatos Hash, struct contato *c){
     size_t key = concatenacao(c->nome);
     key = funcHashMult(key);
     
     struct lista *aux = Hash[key];
     struct lista *aux1 = aux;
     
+    if(Hash[key]->contato == c){
+        if(aux->prox == NULL){
+            free(aux1);
+            return 1;
+        } else {
+            aux = aux->prox;
+            free(aux1);
+            return 1;
+        }
+    }
+
     for(; aux != NULL; aux = aux->prox){
             if(aux->contato == c){  
                 aux1->prox = aux->prox;
@@ -109,28 +120,49 @@ void removerContato(agendaDeContatos Hash, struct contato *c){
             aux1 = aux;
         
     }
+    return 0;
+}
+
+void exportarContatos(agendaDeContatos Hash){
+    FILE *f = fopen("Agenda de Contatos","w");
+    size_t i = 0;
+    for(i; i < size; i++){
+        struct lista *aux = Hash[i];
+        while(aux != NULL){
+            fprintf(f,"%s %s %s\n",aux->contato->nome, aux->contato->tel, aux->contato->email);
+            aux = aux->prox;
+        }
+        
+    }
+
+}
+
+void listarContatos(agendaDeContatos Hash){
+    size_t i = 0;
+    for(i; i < size; i++){
+        struct lista *aux = Hash[i];
+        while(aux != NULL){
+            printf("\n Nome: %s \n Telefone: %s \n Email: %s\n",aux->contato->nome, aux->contato->tel, aux->contato->email);
+            aux = aux->prox;
+        }
+        
+    }
+
 }
 
 int main(){
     struct contato *novo = (struct contato*)malloc(sizeof(struct contato));
     char *nome = (char*)malloc(sizeof(char));
-    strncpy(nome,"Mikael", sizeof("Mikael"));
+    strcpy(nome,"mikael");
     char *tel = (char*)malloc(sizeof(char));
-    strncpy(tel,"84996488895", sizeof("84996488895"));
+    strcpy(tel,"84996488895");
     char *email = (char*)malloc(sizeof(char));
-    strncpy(email,"mikael.vidal@gmail.com",sizeof("mikael.vidal@gmail.com"));
+    strcpy(email,"mikael.vidal@gmail.com");
     novo = criaContato(nome, tel,email);
-
     agendaDeContatos agenda;
     iniciarAgenda(agenda);
     inserir(agenda,novo);
-    strncpy(nome,"Joao", sizeof("Joao"));
-    strncpy(tel,"84996488891", sizeof("84996488891"));
-    strncpy(email,"joao.vidal@gmail.com",sizeof("joao.vidal@gmail.com"));
-    novo = criaContato(nome, tel,email);
-    inserir(agenda,novo);
-    inserir(agenda,novo);
-    strncpy(email,"joao.vidal@gmail.com",sizeof("joao.vidal@gmail.com"));
+    
     removerContato(agenda, novo);
 
 }
