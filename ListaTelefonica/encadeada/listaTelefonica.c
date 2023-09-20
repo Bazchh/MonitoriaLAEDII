@@ -100,7 +100,7 @@ int removerContato(agendaDeContatos Hash, struct contato *c){
     struct lista *aux = Hash[key];
     struct lista *aux1 = aux;
     
-    if(Hash[key]->contato == c){
+    if(aux->contato == c){
         if(aux->prox == NULL){
             free(aux1);
             return 1;
@@ -152,17 +152,22 @@ void listarContatos(agendaDeContatos Hash){
 
 int main(){
     struct contato *novo = (struct contato*)malloc(sizeof(struct contato));
-    char *nome = (char*)malloc(sizeof(char));
-    strcpy(nome,"mikael");
-    char *tel = (char*)malloc(sizeof(char));
-    strcpy(tel,"84996488895");
-    char *email = (char*)malloc(sizeof(char));
-    strcpy(email,"mikael.vidal@gmail.com");
-    novo = criaContato(nome, tel,email);
+    char *nome = (char *)malloc(strlen("mikael") + 1); // +1 para o caractere nulo
+    char *tel = (char *)malloc(strlen("84996488895") + 1);
+    char *email = (char *)malloc(strlen("mikael.vidal@gmail.com") + 1);
+
+    strcpy(nome, "mikael");
+    strcpy(tel, "84996488895");
+    strcpy(email, "mikael.vidal@gmail.com");
+
+    novo = criaContato(nome,tel,email);
     agendaDeContatos agenda;
     iniciarAgenda(agenda);
-    inserir(agenda,novo);
-    
-    removerContato(agenda, novo);
+    strcpy(nome, "mikael");
+    strcpy(tel, "84996488895");
+    strcpy(email, "mikael.vidal@gmail.com");
 
+    inserir(agenda,novo);
+    removerContato(agenda, novo);
+    listarContatos(agenda);
 }
