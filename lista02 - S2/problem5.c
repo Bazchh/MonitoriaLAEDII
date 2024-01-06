@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
+//Este programa segue bastante a logica da primeira questão, o que muda é que não precisamos calcular a media
+//Eu usei a biblioteca math para realizar o calculo do cubo e de quadrado com a função oferecida na biblioteca
+//a função 'pow'
 int main(){
     int soma = 0, quadrados = 0, cubo = 0;
     int i, n;
