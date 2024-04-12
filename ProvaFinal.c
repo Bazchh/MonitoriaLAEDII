@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-//trocar pela quantidade de vertices da sua matriz/grafo
+// trocar pela quantidade de vertices da sua matriz/grafo
 #define tamanho_matriz 2356
 void ler_arquivo(char *nome_arquivo, int **matriz)
 {
@@ -31,7 +31,7 @@ void ler_arquivo(char *nome_arquivo, int **matriz)
     fclose(arch);
 }
 
-void mostraMatriz(int **matriz)
+void mostra_matriz(int **matriz)
 {
     int i, j;
 
@@ -43,6 +43,39 @@ void mostraMatriz(int **matriz)
             printf(" %i ", matriz[i][j]);
         }
         printf("\n");
+    }
+}
+
+int grau_do_maior_vertice(int **matriz)
+{
+    int i, j, maior_grau, aux = 0;
+    for (i = 0; i < tamanho_matriz; i++)
+    {
+        for (j = 0; i < tamanho_matriz; j++)
+        {
+            if (matriz[i][j] == 1)
+            {
+                aux++;
+            }
+        }
+        maior_grau = min_e_max(aux, maior_grau);
+        aux = 0;
+    }
+}
+
+int min_e_max(int n, int n1)
+{
+    if (n > n1)
+    {
+        return n;
+    }
+    else if (n1 > n)
+    {
+        return n1;
+    }
+    else
+    {
+        return n;
     }
 }
 
