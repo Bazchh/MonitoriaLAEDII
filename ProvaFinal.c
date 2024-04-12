@@ -4,6 +4,24 @@
 
 // trocar pela quantidade de vertices da sua matriz/grafo
 #define tamanho_matriz 2356
+int min_e_max(int n, int n1);
+int grau_do_maior_vertice(int **matriz);
+void mostra_matriz(int **matriz);
+void ler_arquivo(char *nome_arquivo, int **matriz);
+int main()
+{
+    int maior_grau;
+    int **matriz = (int **)malloc(tamanho_matriz * sizeof(int *));
+    int i;
+    for (i = 0; i < tamanho_matriz; i++)
+        matriz[i] = (int *)malloc(tamanho_matriz * sizeof(int));
+    ler_arquivo("dadosmatriz.txt", matriz);
+    //   mostra_matriz(matriz);
+
+    maior_grau = grau_do_maior_vertice(matriz);
+    printf("\nO vertice com maior grau eh: %i", maior_grau);
+}
+
 void ler_arquivo(char *nome_arquivo, int **matriz)
 {
     FILE *arch;
@@ -48,44 +66,24 @@ void mostra_matriz(int **matriz)
 
 int grau_do_maior_vertice(int **matriz)
 {
-    int i, j, maior_grau, aux = 0;
+    int i, j, maior_grau, aux = 0, vertice_com_maior_grau;
     for (i = 0; i < tamanho_matriz; i++)
     {
-        for (j = 0; i < tamanho_matriz; j++)
+        for (j = 0; j < tamanho_matriz; j++)
         {
             if (matriz[i][j] == 1)
             {
                 aux++;
             }
         }
-        maior_grau = min_e_max(aux, maior_grau);
+        if (aux > maior_grau)
+        {
+            maior_grau = aux;
+            vertice_com_maior_grau = i;
+        }
         aux = 0;
     }
+    return vertice_com_maior_grau;
 }
 
-int min_e_max(int n, int n1)
-{
-    if (n > n1)
-    {
-        return n;
-    }
-    else if (n1 > n)
-    {
-        return n1;
-    }
-    else
-    {
-        return n;
-    }
-}
 
-int main()
-{
-
-    int **matriz = (int **)malloc(tamanho_matriz * sizeof(int *));
-    int i;
-    for (i = 0; i < tamanho_matriz; i++)
-        matriz[i] = (int *)malloc(tamanho_matriz * sizeof(int));
-    ler_arquivo("dadosmatriz.txt", matriz);
-    mostraMatriz(matriz);
-}
