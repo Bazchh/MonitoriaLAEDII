@@ -35,7 +35,7 @@ int main()
     raiz = inserirNovoNo(raiz, 20);
     mostrarArvore(raiz);
     printf("\n\n");
-    raiz = inserirNovoNo(raiz, 12);
+    raiz = inserirNovoNo(raiz, 22);
     mostrarArvore(raiz);
     printf("\n\n");
     raiz = inserirNovoNo(raiz, 11);
@@ -120,10 +120,10 @@ struct arvore *inserirNovoNo(struct arvore *raiz, int dados)
     Com um valor menor que os dados do nó a esquerda, significa que o desbalanceamento está na parte direita do nó
     Com um valor maior que os dados do nó a direita, significa que o desbalanceamento está na parte esquerda do nó
 
-    Com um valor positivo do fator e com os dados sendo maior que o nó a esquerda da subarvore significa que o desbalanceamento está a 
+    Com um valor positivo do fator e com os dados sendo maior que o nó a esquerda da subarvore significa que o desbalanceamento está a
     direita do nó a esquerda
 
-    Com um valor negativo do fator e com os dados sendo menor que o nó a esquerda da subarvore significa que o desbalanceamento está a 
+    Com um valor negativo do fator e com os dados sendo menor que o nó a esquerda da subarvore significa que o desbalanceamento está a
     esquerda do nó a direita
      */
 
@@ -231,6 +231,7 @@ struct arvore *rotacaoDir(struct arvore *raiz)
 struct arvore *rotacaoEsq(struct arvore *raiz)
 {
     struct arvore *novoNo = raiz->dir;
+    /* Realocando nós de forma adequada para não perder referencias */
     raiz->dir = novoNo->esq;
     novoNo->esq = raiz;
 
